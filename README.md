@@ -10,12 +10,14 @@ Adding L.SimpleGraticule:
 ```JavaScript
 var options = {interval: 20,
                showOriginLabel: true,
+               showLabel: false
                redraw: 'move',
                zoomIntervals: [
                 {start: 0, end: 3, interval: 50},
                 {start: 4, end: 5, interval: 5},
                 {start: 6, end: 20, interval: 1}
-            ]};
+            ],
+            angle: 45};
 
 L.simpleGraticule(options).addTo(map);
 ```
@@ -24,6 +26,7 @@ L.simpleGraticule(options).addTo(map);
 - showOriginLabel: true Whether or not to show '(0,0)' at the origin.
 - redraw: on which map event to redraw the graticule. On `move` is default but `moveend` can be smoother.
 - zoomIntervals: use different intervals in different zoom levels. If not specified, all zoom levels use value in interval option.
+- angle: The rotation angle (in degrees) of the graticule lines around the map's initial center.
 
 Notes
 -----
