@@ -36,19 +36,51 @@
 	<script type="text/javascript" src="L.SimpleGraticule.js"></script>
 
 	<script type="text/javascript">
-  		var map = L.map('map',{
-			center: [0,0],
-			zoom: 5,
-			crs: L.CRS.Simple
-		});
+  		var map = L.map('map', {
+                center: [0, 0], // 初始化时的中心点位置
+                zoom: 5, // 初始化时的缩放等级
+                attributionControl: false, // 版权控件
+                zoomControl: false, // 缩放控件
+				maxBounds: [[-90, -180], [90, 180]], // 限制在指定的地理边界内
+                minZoom: 9, // 地图的最小缩放级别
+				maxZoom: 17, // 地图的最大缩放级别
+                doubleClickZoom: false, // 地图是否可以通过双击来放大
+				//crs: L.CRS.Simple,
+			});
+
+        // 添加地圖圖層
+        var tileLayer = L.tileLayer('/{z}/{x}/{y}.png', {
+            minZoom: 9, // 地图的最小缩放级别
+			maxZoom: 17, // 地图的最大缩放级别
+            //errorTileUrl: './error.png', // 显示瓦片图像的 URL，以代替加载失败的瓦片。
+		}).addTo(map);
+
+        // 填充 tile 錯誤的區域
+		tileLayer.on('tileerror', function (event) {
+            // 取得原 tile 元素
+            var tile = event.tile;
+
+            // 建立 canvas 元素，畫出藍色區塊
+            var canvas = document.createElement('canvas');
+            canvas.width = 256;
+            canvas.height = 256;
+
+            var ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#87CEFA'; // 淺藍色
+            ctx.fillRect(0, 0, 256, 256);
+
+			// 把 canvas 畫面轉成圖片 URL 並替換原 tile
+            tile.src = canvas.toDataURL();
+        });
+        tileLayer.addTo(map);
+
 		var options = {
-			interval: 20,
-			showOriginLabel: true,
+			interval: 1,
+            showOriginLabel: false,
 			showLabel: false,
 			redraw: 'move',
-			angle: 45,
+			angle: 30,
 		};
-
 		let graticule = L.simpleGraticule(options).addTo(map);
 		map.removeLayer(graticule);
         graticule = L.simpleGraticule(options).addTo(map);
