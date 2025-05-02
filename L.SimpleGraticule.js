@@ -36,7 +36,7 @@ L.SimpleGraticule = L.LayerGroup.extend({
     },
 
     onRemove: function(map) {
-        map.off('viewreset '+ this.options.redraw, this.map);
+        map.off('viewreset '+ this.options.redraw, this.redraw, this);
         this.eachLayer(this.removeLayer, this);
     },
 
